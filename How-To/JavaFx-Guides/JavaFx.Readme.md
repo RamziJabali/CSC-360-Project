@@ -1,0 +1,1 @@
+﻿The start() method is the main entry point for all JavaFX applications.
