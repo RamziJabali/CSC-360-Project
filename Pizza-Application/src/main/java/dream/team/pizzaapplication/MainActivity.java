@@ -13,12 +13,10 @@ public class MainActivity extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainActivity.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(loginView.getLoginView(), 600, 400);
-        stage.centerOnScreen();
+        stage.setScene(new Scene(loginView.getLoginView(), 600, 400));
         stage.setTitle("Login");
-        stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public static void main(String[] args) {

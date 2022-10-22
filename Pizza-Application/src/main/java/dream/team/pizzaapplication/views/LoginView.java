@@ -1,9 +1,9 @@
 package dream.team.pizzaapplication.views;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -28,8 +28,10 @@ public class LoginView {
         enterButton.setMaxHeight(20);// TODO: Add these values to dimension presets class
         HBox loginHBox = new HBox();
         loginHBox.setSpacing(20); // TODO: Add these values to dimension presets class
+        loginHBox.setMaxWidth(275); // TODO: Add these values to dimension presets class
         loginHBox.getChildren().addAll(idTextArea, enterButton);
         loginVBox.getChildren().addAll(welcomeBackLabel, enterIdLabel, loginHBox);
+        loginVBox.setAlignment(Pos.CENTER);
         return loginVBox;
     }
 
