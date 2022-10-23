@@ -1,5 +1,6 @@
 package dream.team.pizzaapplication.views;
 
+import dream.team.pizzaapplication.values.DimensionPresets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,22 +14,21 @@ public class LoginView {
 
     public VBox getLoginView() {
         VBox loginVBox = new VBox();
-        loginVBox.setSpacing(20); // TODO: Add these values to dimension presets class
-
+        loginVBox.setSpacing(DimensionPresets.Spacing.Surrounding.l);
         Label enterIdLabel = new Label("Enter ID"); //TODO: Add to strings class
         Label welcomeBackLabel = new Label("Welcome Back"); //TODO: Add to strings class
 
         TextArea idTextArea = new TextArea();
-        idTextArea.setPrefHeight(50); // TODO: Add these values to dimension presets class
-        idTextArea.setPrefWidth(200); // TODO: Add these values to dimension presets class
-        idTextArea.setPrefColumnCount(ID_LENGTH);// TODO: Add these values to dimension presets class
+        idTextArea.setPrefHeight(DimensionPresets.TextFieldSize.m);
+        idTextArea.setPrefWidth(DimensionPresets.TextFieldSize.xxl);
+        idTextArea.setPrefColumnCount(ID_LENGTH);
 
         Button enterButton = new Button("->");
-        enterButton.setMaxWidth(40);// TODO: Add these values to dimension presets class
-        enterButton.setMaxHeight(20);// TODO: Add these values to dimension presets class
+        enterButton.setMaxWidth(DimensionPresets.ButtonSize.m);
+        enterButton.setMaxHeight(DimensionPresets.ButtonSize.s);
         HBox loginHBox = new HBox();
-        loginHBox.setSpacing(20); // TODO: Add these values to dimension presets class
-        loginHBox.setMaxWidth(275); // TODO: Add these values to dimension presets class
+        loginHBox.setSpacing(DimensionPresets.Spacing.Surrounding.m);
+        loginHBox.setMaxWidth(DimensionPresets.HBox.xl4);
         loginHBox.getChildren().addAll(idTextArea, enterButton);
         loginVBox.getChildren().addAll(welcomeBackLabel, enterIdLabel, loginHBox);
         loginVBox.setAlignment(Pos.CENTER);
