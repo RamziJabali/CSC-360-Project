@@ -100,6 +100,18 @@ public class DimensionPresets {
         public static final int xl5 = 300;
         public static final int xl6 = 350;
     }
+    public static class VBox {
+        public static final int s = 25;
+        public static final int m = 50;
+        public static final int xm = 55;
+        public static final int l = 100;
+        public static final int xl = 150;
+        public static final int xxl = 200;
+        public static final int xxxl = 250;
+        public static final int xl4 = 275;
+        public static final int xl5 = 300;
+        public static final int xl6 = 350;
+    }
 
     public static class ImageSize {
         public static final int xs = 25;
