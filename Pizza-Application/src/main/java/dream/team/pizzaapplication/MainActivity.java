@@ -13,7 +13,7 @@ public class MainActivity extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setScene(new Scene(loginView.getLoginView(), 600, 400));
+        stage.setScene(new Scene(loginView.getLoginView(), 900, 600));
         stage.setTitle("Login");
         stage.show();
         stage.centerOnScreen();
