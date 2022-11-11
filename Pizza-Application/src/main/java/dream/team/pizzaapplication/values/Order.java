@@ -8,6 +8,6 @@ public final class Order {
 
     @Override
     public String toString() {
-        return "User ID [" + id + "] - Pizza Type[" + pizzaType + "] - Pizza Toppings [" + pizzaToppings + "] - Order Status [" + status + "]";
+        return "[" + id + "] - [" + pizzaType + "] - [" + pizzaToppings + "] - [" + status + "]";
     }
 }
