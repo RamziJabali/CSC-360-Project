@@ -1,37 +1,72 @@
 package dream.team.pizzaapplication.views;
 
+import dream.team.pizzaapplication.values.Order;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Box;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ChefView {
     String currentOrder = "";
-    public HBox getChefView(){
+    ArrayList<Order> orderList = new ArrayList<>();
+    public HBox getChefView() throws Exception {
         HBox stage = new HBox();
         Label pizzaOrder = new Label();
-        String [] pizza = {"cheese","pep","anchovi"};
-        ListView pizzaOrderList = new ListView();
-        pizzaOrderList.getItems().addAll(pizza);
-        stage.getChildren().add(pizzaOrderList);
+        ListView pizzaListView = new ListView();
+        dataBaseToArrayList();
+        pizzaListView.getItems().addAll(orderList);
+        stage.getChildren().add(pizzaListView);
         stage.getChildren().add(pizzaOrder);
-        pizzaOrderList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        pizzaListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Order>() {
             @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                currentOrder = (String) pizzaOrderList.getSelectionModel().getSelectedItem();
+            public void changed(ObservableValue<? extends Order> observableValue, Order order, Order t1) {
+                currentOrder = pizzaListView.getSelectionModel().getSelectedItem().toString();
                 pizzaOrder.setText(currentOrder);
             }
         });
         return stage;
     }
 
-    private HBox createBoxFromPizzaInformation(String line){
-        HBox hbox = new HBox();
-        Label label = new Label(line);
-        hbox.getChildren().add(label);
-        return hbox;
+    private void dataBaseToArrayList() throws Exception {
+        String FILE_PATH = "/Users/ramzijabali/Documents/Code/CSC-360-Project/Pizza-Application/test";
+        File dataBase = new File(FILE_PATH);
+        Scanner readDataBase;
+        try {
+            readDataBase = new Scanner(dataBase);
+        } catch (FileNotFoundException e) {
+            throw new Exception("File not found!");
+        }
+        String nextWord;
+        while(true){
+            Order order = new Order();
+            for (int j = 1; j <= 4; j++) {
+                nextWord = readDataBase.next();
+                if (!nextWord.equals("EOF")) {
+                    switch (j) {
+                        case 1:
+                            order.id = nextWord;
+                            break;
+                        case 2:
+                            order.pizzaType = nextWord;
+                            break;
+                        case 3:
+                            order.pizzaToppings = nextWord;
+                            break;
+                        case 4:
+                            order.status = nextWord;
+                            orderList.add(order);
+                            break;
+                    }
+                } else {
+                    return;
+                }
+            }
+        }
     }
 }
