@@ -1,21 +1,32 @@
 package dream.team.pizzaapplication.classdir;
 import java.util.Set;
+import java.util.HashSet;
 
-enum Types {CHEESE, PEP, VEGGI};
-enum Toppings {XCHEESE, BACON, MUSH};
-enum Statuses {SUBMITTED, APPROVED, REJECTED, COOKING, FINISHED};
 
-public class order {
+public class Order{
+    // Note that if you add/remove data members to Order you must change Order.toString and Order(String[] data)
+    public enum Types {CHEESE, PEP, VEGGI};
+    public enum Toppings {XCHEESE, BACON, MUSH};
+    public enum Statuses {SUBMITTED, APPROVED, REJECTED, COOKING, FINISHED};
+
+    int oid = -1; // Order ID (unique for every individual order)
+    String uid = ""; // User ID
     double cost = 0.00;
     Statuses status;
-    Types type;
-    Set<Toppings> toppings;
-    // TODO: add timer object (wait until chef class).
+    Types type; // Pizza type
+    Set<Toppings> toppings; // Set which contains added pizza toppings 
+    // TODO: add timer object member+methods (wait until chef class to do so).
 
     // Setter methods
+    public void setOid(int newoid){
+        this.oid = newoid; // Set order ID
+    }
+    public void setUid(String newuid){
+        this.uid = newuid; // Set user ID (owner of order)
+    }
     public void setCost(double newcost){
         this.cost = newcost;
-        // remove this method?
+        // remove this method? (don't think this would ever need to be called)
     }
     public void setStatus(Statuses newstatus){
         this.status = newstatus;
@@ -34,6 +45,12 @@ public class order {
     }
 
     // Getter methods
+    public int getOid(){
+        return this.oid; // returns unique identifier for this order
+    }
+    public String getUid(){
+        return this.uid; // return student ID for user who issued the order
+    }
     public double getCost(){
         return this.cost;
     }
@@ -44,8 +61,27 @@ public class order {
         return this.toppings;
     }
     
-    public order(){
+    public Order(){
         this.type = Types.CHEESE;
+        //this.toppings = Collections.<Toppings>emptySet();
+        this.toppings = new HashSet<Toppings>();
+        this.oid = 0;
+        updateCost();
+    }
+
+    // Instanciate order from string representation
+    public Order(String[] data){
+        this.toppings = new HashSet<Toppings>();
+        this.oid = Integer.parseInt(data[0]);
+        this.uid = data[1];
+        this.status = Statuses.valueOf(data[2]);
+        this.type = Types.valueOf(data[3]);
+        
+        // parsing the set of toppings
+        data[4] = data[4].replace("[","").replace("]","");
+        for (String newtop : data[4].split(",",0)) {
+            this.addTopping(Toppings.valueOf(newtop.trim()));
+        }
         updateCost();
     }
     
@@ -62,8 +98,20 @@ public class order {
                 cost = 15.00;
                 break;
         }
-        
         this.cost += 1.50 * this.toppings.size();
+    }
+    
+    // Return a string representation of this order object (for storing in txt file).
+    @Override
+    public String toString(){
+        // "<uuid>,<student id>,<status>,<type>,[<t1>,...]\n"
+        String result, ordid, ordstat, ordtype, ordtops;
+        ordid = String.format("%08d",this.oid); // String representation of order's unique ID (8 digit width).
+        ordstat = this.status.name();
+        ordtype = this.type.name();
+        ordtops = this.toppings.toString();
+        result = ordid + "," + this.uid + "," + ordstat + "," + ordtype + "," + ordtops + "\n";
+        return result;
     }
 }
 
