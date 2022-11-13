@@ -1,6 +1,11 @@
 //package dream.team.pizzaapplication.views;
 package application;
 	
+import java.io.IOException;
+
+import application.Order.Types;
+import application.Student;
+import application.User;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,9 +29,14 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
+
+
 public class StudentView extends Application{
 	//Variables and Elements
+	boolean cheese = false, pepperoni = false, veggie = false;
+	boolean XCheese = false, Bacon = false, Mush = false;
 	Stage primaryStage = new Stage();
+	String PTyp, PTop;
 	int width = 900, height = 600;
 	String idNumber;
 	double pizzaPrice = 0, toppingPrice = 0;
@@ -175,13 +185,97 @@ public class StudentView extends Application{
 			pizzaToppings.getChildren().add(CBox[i]);
         }
         VBox.setMargin(CBox[0], new Insets(-27,0,0,0));
-        RBtn[0].setOnAction(e->{pizzaPrice = 10.00;outputPriceText();});
-        RBtn[1].setOnAction(e->{pizzaPrice = 12.00;outputPriceText();});
-        RBtn[2].setOnAction(e->{pizzaPrice = 15.00;outputPriceText();});
+        RBtn[0].setOnAction(e->{
+        	pizzaPrice = 10.00;
+            outputPriceText();
+            pepperoni = false;
+            veggie = false;
+            cheese = true;
+        	});
+        RBtn[1].setOnAction(e->{
+        	pizzaPrice = 12.00;
+            outputPriceText();
+            pepperoni = true;
+            veggie = false;
+            cheese = false;
+        	});
+        RBtn[2].setOnAction(e->{
+        	pizzaPrice = 15.00;
+            outputPriceText();
+            pepperoni = false;
+            veggie = true;
+            cheese = false;
+        	});
         toppingCheckBox();
 		return Menu;
 
 	}
+	
+	//Method to increment(or decrement) topping's price
+		private void toppingCheckBox() {
+			CBox[0].selectedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					// TODO Auto-generated method stub
+					if(arg2) {
+						toppingPrice += 1.5;
+						XCheese = true;
+						outputPriceText();
+					}
+					else{
+						toppingPrice -= 1.5;
+						XCheese = false;
+						outputPriceText();
+					}
+					
+					
+				}
+	        });
+			CBox[1].selectedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					// TODO Auto-generated method stub
+					if(arg2) {
+						toppingPrice += 1.5;
+						outputPriceText();
+						Bacon = true;
+					}
+					else{
+						toppingPrice -= 1.5;
+						outputPriceText();
+						Bacon = false;
+					}
+				}
+	        });
+			CBox[2].selectedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					// TODO Auto-generated method stub
+					if(arg2) {
+						toppingPrice += 1.5;
+						outputPriceText();
+						Mush = true;
+					}
+					else{
+						toppingPrice -= 1.5;
+						outputPriceText();
+						Mush = false;
+					}
+				}
+	        });
+		}
+	
+	private void exportPTyp(int a){
+		if(a==0) {PTyp = "Cheese";}
+		if(a==1) {PTyp = "Pepperoni";}
+		if(a==2) {PTyp = "Veggie";}
+	}
+	
+//	private void exportPTop(int a){
+//		if(a==0) {PTop = "ExtraCheese";}
+//		if(a==1) {PTop = "Bacon";}
+//		if(a==2) {PTop = "Mushroom";}
+//	}
 	
 	//Creates a section for inputting ASUID and Submitting the Order
 	private HBox createIDChecker(){
@@ -194,26 +288,75 @@ public class StudentView extends Application{
 		//idNumber = ASUID.getText();
 		//System.out.println("ID Numbah : " + idNumber);
 		Button submit = createButton("Submit Order");
+		
 		submit.setOnAction(event -> {submitOrderButton();});
+		
 		toCheck.getChildren().addAll(ASUID, submit);
 		return toCheck;
 	}
 	
 	//Method for Submit Button. |NEEDS UPDATE|
 	private void submitOrderButton() {
+		
 		idNumber = ASUID.getText();
 		int ID = Integer.parseInt(idNumber);
-		System.out.println("idNumber is: " + ID);
+		System.out.println("Cheese Pizza: " + cheese);
+		System.out.println("Pepperoni Pizza: " + pepperoni);
+		System.out.println("Veggie Pizza: " + veggie);
+		System.out.println(XCheese);
+		System.out.println(Bacon);
+		System.out.println(Mush);
+		
+		System.out.println("ID: " + ID + " | PizzaType: " + PTyp + " | PizzaToppings: " + PTop );
+		Student student = null;
+		try {
+			student = new Student(idNumber);
+			System.out.println("Hello");
+		} catch (IOException e1) {
+			System.out.println("HOLO");
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		if(cheese == true){
+            try {
+				student.submitOrder(Types.CHEESE, XCheese, Bacon, Mush);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+		
+		if(pepperoni == true){
+            try {
+				student.submitOrder(Types.PEP, XCheese, Bacon, Mush);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+		
+		if(veggie == true){
+            try {
+				student.submitOrder(Types.VEGGI, XCheese, Bacon, Mush);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 	}
 	
 	//Method for View History Button. |NEEDS UPDATE|
 	private void viewHistoryButton() {
 		System.out.println("Order History");
 		BorderPane root = new BorderPane();
+		ListView list = new ListView();
+		
+		root.setLeft(list);
 		Scene scene = new Scene(root,400,400);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Student's Page: Order History");
 		primaryStage.show();
+		
 	}
 	
 	//Method for View Status Button. |NEEDS UPDATE|
@@ -224,52 +367,6 @@ public class StudentView extends Application{
 		alert.setTitle("Order Status");
 		alert.setContentText("Order Status: " + orderStatus);
 		alert.showAndWait();
-	}
-	
-	//Method to increment(or decrement) topping's price
-	private void toppingCheckBox() {
-		CBox[0].selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-				// TODO Auto-generated method stub
-				if(arg2) {
-					toppingPrice += 1.5;
-					outputPriceText();
-				}
-				else{
-					toppingPrice -= 1.5;
-					outputPriceText();
-				}
-			}
-        });
-		CBox[1].selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-				// TODO Auto-generated method stub
-				if(arg2) {
-					toppingPrice += 1.5;
-					outputPriceText();
-				}
-				else{
-					toppingPrice -= 1.5;
-					outputPriceText();
-				}
-			}
-        });
-		CBox[2].selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-				// TODO Auto-generated method stub
-				if(arg2) {
-					toppingPrice += 1.5;
-					outputPriceText();
-				}
-				else{
-					toppingPrice -= 1.5;
-					outputPriceText();
-				}
-			}
-        });
 	}
 	
 	//Uses pizzaPrice and toppingPrice to display output
