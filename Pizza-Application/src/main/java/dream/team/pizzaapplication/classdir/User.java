@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class User{
@@ -26,7 +27,7 @@ public abstract class User{
     public void readOrders(ArrayList<Order> orderList, String userid) throws IOException{
       checkFileExists();
       try {
-        File myObj = new File("txtdir/" + userid + ".txt");
+        File myObj = new File("src/main/java/dream/team/pizzaapplication/txtdir/" + userid + ".txt");
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
           String[] data = myReader.nextLine().split(",",6);
@@ -42,8 +43,9 @@ public abstract class User{
     // Add string represention of given order to txtfile.
     public void appendTxtOrder(Order neworder, String userid) throws IOException{
       checkFileExists(userid);
+      //src/main/java/dream/team/pizzaapplication/txtdir
       try {
-        Files.write(Paths.get("txtdir/" + userid + ".txt"), neworder.toString().getBytes(), StandardOpenOption.APPEND);
+        Files.write(Paths.get("src/main/java/dream/team/pizzaapplication/txtdir/" + userid + ".txt"), neworder.toString().getBytes(), StandardOpenOption.APPEND);
       }catch (IOException e) {
         System.out.println("Error in appendTxtOrder");
       }
@@ -65,11 +67,11 @@ public abstract class User{
     
     // Overwrite userid.txt with orderList
     public void overwriteTxt(String userid, ArrayList<Order> orderList) throws IOException{
-      if(userid=="counter"){
+      if(Objects.equals(userid, "counter")){
         System.out.println("Don't do that (tried to used \"counter\" as userid).");
         System.exit(1);
       }
-      FileOutputStream outputStream = new FileOutputStream("txtdir/"+userid+".txt");
+      FileOutputStream outputStream = new FileOutputStream("src/main/java/dream/team/pizzaapplication/txtdir/"+userid+".txt");
       for(Order ord : orderList){
         outputStream.write(ord.toString().getBytes());
       }
@@ -100,7 +102,7 @@ public abstract class User{
     }
 
     public void checkFileExists(String userid) throws IOException{
-      File f = new File("txtdir/" + userid + ".txt");
+      File f = new File("src/main/java/dream/team/pizzaapplication/txtdir/" + userid + ".txt");
       if(!f.exists()){
         f.createNewFile();
       }else{
@@ -110,7 +112,11 @@ public abstract class User{
 
     // Set txtfile value
     public void settxt(){
-      this.txtfile = "txtdir/" + uid + ".txt"; // is this right?
+      this.txtfile = "src/main/java/dream/team/pizzaapplication/txtdir/" + uid + ".txt"; // is this right
+    }
+
+    public ArrayList<Order> getOrders(){
+        return this.orders;
     }
     
     public void printOrders(){
