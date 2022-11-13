@@ -59,9 +59,12 @@ public class Student extends User{
                 }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("counter.txt not found; creating the file.");
+            //e.printStackTrace();
         }
+        FileWriter fw = new FileWriter(counterpath);
+        fw.write(Integer.toString(counter+1));
+        fw.close();
         return counter;
     }
 }
