@@ -15,9 +15,9 @@ public class Order{
     public enum Statuses {SUBMITTED, APPROVED, REJECTED, COOKING, FINISHED};
 
     int oid = -1; // Order ID (unique for every individual order)
-    String uid = ""; // User ID
-    String datetime = "";
-    double cost = 0.00;
+    String uid = ""; // User ID (Student who submitted the order)
+    String datetime = ""; // datetime string
+    double cost = 0.00; // calculated automatically
     Statuses status;
     Types type; // Pizza type
     Set<Toppings> toppings; // Set which contains added pizza toppings 
