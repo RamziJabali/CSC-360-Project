@@ -1,3 +1,4 @@
+//package dream.team.pizzaapplication.views;
 package application;
 	
 import javafx.application.Application;
@@ -25,9 +26,11 @@ import javafx.geometry.Insets;
 
 public class StudentView extends Application{
 	//Variables and Elements
+	Stage primaryStage = new Stage();
 	int width = 900, height = 600;
 	String idNumber;
 	double pizzaPrice = 0, toppingPrice = 0;
+	TextField ASUID = new TextField();
 	RadioButton[] RBtn = new RadioButton[3];
 	CheckBox[] CBox = new CheckBox[3];
 	Insets INSETS = new Insets(10, 10, 10, 10);
@@ -53,13 +56,13 @@ public class StudentView extends Application{
 			root.setBottom(bottom);
 			
 			Scene pizzaMenu = new Scene(root,width,height);
+			primaryStage.setTitle("Student's Page: Menu");
 			primaryStage.setScene(pizzaMenu);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 	//Creates a Button
 	private Button createButton(String text) {
 		Button button = new Button(text);
@@ -187,10 +190,9 @@ public class StudentView extends Application{
 		toCheck.setAlignment(Pos.CENTER);
 		toCheck.setPadding(INSETS);
 		toCheck.setSpacing(20);
-		TextField ASUID = new TextField();
 		ASUID.setPromptText("Enter ASU ID");
-		idNumber = ASUID.getText();
-		System.out.println(idNumber);
+		//idNumber = ASUID.getText();
+		//System.out.println("ID Numbah : " + idNumber);
 		Button submit = createButton("Submit Order");
 		submit.setOnAction(event -> {submitOrderButton();});
 		toCheck.getChildren().addAll(ASUID, submit);
@@ -199,14 +201,19 @@ public class StudentView extends Application{
 	
 	//Method for Submit Button. |NEEDS UPDATE|
 	private void submitOrderButton() {
-		System.out.println("idNumber is" + idNumber);
-		outputPrice.setText(idNumber);
+		idNumber = ASUID.getText();
+		int ID = Integer.parseInt(idNumber);
+		System.out.println("idNumber is: " + ID);
 	}
 	
 	//Method for View History Button. |NEEDS UPDATE|
 	private void viewHistoryButton() {
 		System.out.println("Order History");
-		
+		BorderPane root = new BorderPane();
+		Scene scene = new Scene(root,400,400);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Student's Page: Order History");
+		primaryStage.show();
 	}
 	
 	//Method for View Status Button. |NEEDS UPDATE|
@@ -215,7 +222,7 @@ public class StudentView extends Application{
 		/**/String orderStatus = "ACCEPTED";
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Order Status");
-		alert.setContentText("Order Status: "+orderStatus);
+		alert.setContentText("Order Status: " + orderStatus);
 		alert.showAndWait();
 	}
 	
@@ -269,8 +276,6 @@ public class StudentView extends Application{
 	private void outputPriceText() {
 		outputPrice.setText("$" + Double.toString(pizzaPrice+toppingPrice));
 	}
-	
-	public static void main(String[] args) {launch(args);}
 	
 }
 
