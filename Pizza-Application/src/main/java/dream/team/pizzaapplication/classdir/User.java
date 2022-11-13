@@ -82,10 +82,23 @@ public abstract class User{
       }
       overwriteTxt(userid, temp);
     }
+    
+    // Check if a txt file for this user exists. If not, create an empty one.
+    public void checkFileExists() throws IOException{
+      File yourFile = new File(this.txtfile);
+      yourFile.createNewFile(); // if file already exists will do nothing 
+      FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+    }
 
     // Set txtfile value
     public void settxt(){
-        this.txtfile = "txtdir/" + uid + ".txt"; // is this right?
+      this.txtfile = "txtdir/" + uid + ".txt"; // is this right?
+    }
+    
+    public void printOrders(){
+      for(Order ord : this.orders){
+        System.out.println(ord);
+      }
     }
     
     //User(String newid){ settxt(); readOrders(); }

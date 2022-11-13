@@ -15,22 +15,13 @@ import dream.team.pizzaapplication.classdir.Order.Toppings;
 import dream.team.pizzaapplication.classdir.Order.Types;
 
 public class Student extends User{
-    public Student(String uid){
+    public Student(String uid) throws IOException{
         this.uid = uid;
         this.settxt();
         File f = new File(this.txtfile);
         //File f = new File(uid + ".txt");
-        if(f.isFile()){
-            readOrders();
-        }else{
-            try{
-                //f.createNewFile();
-                Path fp = Paths.get(this.txtfile);
-                Files.createDirectories(fp.getParent());
-                Files.createFile(fp);
-            } 
-            catch(IOException e){e.printStackTrace();}
-        }
+        checkFileExists(); // If <uid>.txt doesn't exist, then create an empty file for it.
+        readOrders();
     }
     
     /*
