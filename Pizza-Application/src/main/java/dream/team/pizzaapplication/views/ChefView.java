@@ -3,6 +3,8 @@ package dream.team.pizzaapplication.views;
 import dream.team.pizzaapplication.values.Order;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -50,6 +52,12 @@ public class ChefView {
                 pizzaOrderType.setText(observableValue.getValue().pizzaType);
                 pizzaOrderToppings.setText(observableValue.getValue().pizzaToppings);
                 pizzaOrderStatus.setText(observableValue.getValue().status);
+            }
+        });
+        cookButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+            System.out.print("Do something here");
             }
         });
         return stage;
