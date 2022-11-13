@@ -56,6 +56,7 @@ public abstract class User{
         if(ord.getOid() == orderid){
           poppedOrd = ord.toString();
           this.orders.remove(ord);
+          break;
         }
       }
       this.overwriteTxt(this.uid, this.orders);
