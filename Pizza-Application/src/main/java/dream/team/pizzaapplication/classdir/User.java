@@ -28,7 +28,7 @@ public abstract class User{
         File myObj = new File("txtdir/" + userid + ".txt");
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
-          String[] data = myReader.nextLine().split(",",5);
+          String[] data = myReader.nextLine().split(",",6);
           orderList.add(new Order(data));
         }
         myReader.close();
@@ -85,9 +85,15 @@ public abstract class User{
     
     // Check if a txt file for this user exists. If not, create an empty one.
     public void checkFileExists() throws IOException{
-      File yourFile = new File(this.txtfile);
-      yourFile.createNewFile(); // if file already exists will do nothing 
-      FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+      //File yourFile = new File(this.txtfile);
+      //yourFile.createNewFile(); // if file already exists will do nothing 
+      //FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+      File f = new File(this.txtfile);
+      if(!f.exists()){
+        f.createNewFile();
+      }else{
+        System.out.println("File already exists");
+      }
     }
 
     // Set txtfile value

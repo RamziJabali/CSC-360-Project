@@ -18,7 +18,7 @@ public class Student extends User{
     public Student(String uid) throws IOException{
         this.uid = uid;
         this.settxt();
-        File f = new File(this.txtfile);
+        //File f = new File(this.txtfile);
         //File f = new File(uid + ".txt");
         checkFileExists(); // If <uid>.txt doesn't exist, then create an empty file for it.
         readOrders();

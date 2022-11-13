@@ -1,5 +1,10 @@
 package dream.team.pizzaapplication.classdir;
 import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 
 
@@ -11,11 +16,13 @@ public class Order{
 
     int oid = -1; // Order ID (unique for every individual order)
     String uid = ""; // User ID
+    String datetime = "";
     double cost = 0.00;
     Statuses status;
     Types type; // Pizza type
     Set<Toppings> toppings; // Set which contains added pizza toppings 
     // TODO: add timer object member+methods (wait until chef class to do so).
+    final String dtFormat = "yyyy-mm-dd hh:mm:ss";
 
     // Setter methods
     public void setOid(int newoid){
@@ -63,8 +70,13 @@ public class Order{
     
     public Order(){
         this.type = Types.CHEESE;
-        //this.toppings = Collections.<Toppings>emptySet();
         this.toppings = new HashSet<Toppings>();
+
+        // Automatically instanciate Order's datetime string w/ current date & time.
+        Date date = Calendar.getInstance().getTime();
+        DateFormat df = new SimpleDateFormat(this.dtFormat);
+        this.datetime = df.format(date);
+
         this.oid = 0;
         updateCost();
     }
@@ -75,11 +87,15 @@ public class Order{
         this.oid = Integer.parseInt(data[0]);
         this.uid = data[1];
         this.status = Statuses.valueOf(data[2]);
-        this.type = Types.valueOf(data[3]);
+
+        //DateTimeFormatter dtf = DateTimeFormatter.ofPattern(this.dtFormat);
+        this.datetime = data[3];
+
+        this.type = Types.valueOf(data[4]);
         
         // parsing the set of toppings
-        data[4] = data[4].replace("[","").replace("]","");
-        for (String newtop : data[4].split(",",0)) {
+        data[5] = data[5].replace("[","").replace("]","");
+        for (String newtop : data[5].split(",",0)) {
             this.addTopping(Toppings.valueOf(newtop.trim()));
         }
         updateCost();
@@ -110,7 +126,7 @@ public class Order{
         ordstat = this.status.name();
         ordtype = this.type.name();
         ordtops = this.toppings.toString();
-        result = ordid + "," + this.uid + "," + ordstat + "," + ordtype + "," + ordtops + "\n";
+        result = ordid + "," + this.uid + "," + ordstat + "," + this.datetime + "," + ordtype + "," + ordtops + "\n";
         return result;
     }
 }
