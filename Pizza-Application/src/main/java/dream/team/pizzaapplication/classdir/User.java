@@ -19,11 +19,12 @@ public abstract class User{
     String txtfile; // Path + name to User's txt file.
     ArrayList<Order> orders = new ArrayList<>(); // Array to store the "current working" list of orders.
 
-    public void readOrders(){
+    public void readOrders() throws IOException{
       readOrders(this.orders, this.uid);
     }
     // Read user's txtfile, parsing it into an array of order objects. 
-    public void readOrders(ArrayList<Order> orderList, String userid){
+    public void readOrders(ArrayList<Order> orderList, String userid) throws IOException{
+      checkFileExists();
       try {
         File myObj = new File("txtdir/" + userid + ".txt");
         Scanner myReader = new Scanner(myObj);
@@ -40,6 +41,7 @@ public abstract class User{
 
     // Add string represention of given order to txtfile.
     public void appendTxtOrder(Order neworder, String userid) throws IOException{
+      checkFileExists(userid);
       try {
         Files.write(Paths.get("txtdir/" + userid + ".txt"), neworder.toString().getBytes(), StandardOpenOption.APPEND);
       }catch (IOException e) {
@@ -48,13 +50,16 @@ public abstract class User{
     }
 
     // Given an order's unique identifier, remove it from CWS and txtfile.
-    public void removeOrder(int orderid) throws IOException{
+    public String removeOrder(int orderid) throws IOException{
+      String poppedOrd = "?";
       for(Order ord : this.orders){
         if(ord.getOid() == orderid){
+          poppedOrd = ord.toString();
           this.orders.remove(ord);
         }
       }
       this.overwriteTxt(this.uid, this.orders);
+      return poppedOrd;
     }
     
     // Overwrite userid.txt with orderList
@@ -85,10 +90,16 @@ public abstract class User{
     
     // Check if a txt file for this user exists. If not, create an empty one.
     public void checkFileExists() throws IOException{
-      //File yourFile = new File(this.txtfile);
-      //yourFile.createNewFile(); // if file already exists will do nothing 
-      //FileOutputStream oFile = new FileOutputStream(yourFile, false); 
       File f = new File(this.txtfile);
+      if(!f.exists()){
+        f.createNewFile();
+      }else{
+        System.out.println("File already exists");
+      }
+    }
+
+    public void checkFileExists(String userid) throws IOException{
+      File f = new File("txtdir/" + userid + ".txt");
       if(!f.exists()){
         f.createNewFile();
       }else{

@@ -80,8 +80,28 @@ public class Order{
         this.oid = 0;
         updateCost();
     }
-
     // Instanciate order from string representation
+    public Order(String newstr){
+        String[] data = newstr.split(",",6);
+        this.toppings = new HashSet<Toppings>();
+        this.oid = Integer.parseInt(data[0]);
+        this.uid = data[1];
+        this.status = Statuses.valueOf(data[2]);
+
+        //DateTimeFormatter dtf = DateTimeFormatter.ofPattern(this.dtFormat);
+        this.datetime = data[3];
+
+        this.type = Types.valueOf(data[4]);
+        
+        // parsing the set of toppings
+        data[5] = data[5].replace("[","").replace("]","");
+        for (String newtop : data[5].split(",",0)) {
+            this.addTopping(Toppings.valueOf(newtop.trim()));
+        }
+        updateCost();
+    }
+
+    // Instanciate order from string array representation
     public Order(String[] data){
         this.toppings = new HashSet<Toppings>();
         this.oid = Integer.parseInt(data[0]);
