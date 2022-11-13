@@ -1,5 +1,6 @@
 package dream.team.pizzaapplication;
 
+import dream.team.pizzaapplication.views.ChefView;
 import dream.team.pizzaapplication.views.LoginView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import java.io.IOException;
 
 public class MainActivity extends Application {
     private final LoginView loginView = new LoginView();
+    private final ChefView chefView = new ChefView();
 
     @Override
     public void start(Stage stage) throws IOException {
