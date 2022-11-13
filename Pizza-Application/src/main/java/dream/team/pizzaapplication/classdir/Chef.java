@@ -15,6 +15,7 @@ public class Chef extends User{
     
     public void cookOrder(String userid, int orderid) throws IOException, InterruptedException{
        updateTxtOrderStatus(userid, orderid, Statuses.COOKING); 
+       System.out.println("The order is cooking. Starting timer...");
        Thread.sleep(3000); // kill thread for 3 seconds
     }
 
