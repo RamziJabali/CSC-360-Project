@@ -36,7 +36,7 @@ public class ChefView {
                 pizzaToppings, pizzaOrderToppings, pizzaStatusString, pizzaOrderStatus, cookButton);
         ListView pizzaListView = new ListView();
         pizzaListView.setMinWidth(450);
-        dataBaseToArrayList();
+//        dataBaseToArrayList();
         pizzaListView.getItems().addAll(orderList);
         stage.getChildren().add(pizzaListView);
         stage.getChildren().add(orderDetails);
@@ -57,7 +57,7 @@ public class ChefView {
         cookButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-            System.out.print("Do something here");
+            System.out.print("Cook pizza");
             }
         });
         return stage;
