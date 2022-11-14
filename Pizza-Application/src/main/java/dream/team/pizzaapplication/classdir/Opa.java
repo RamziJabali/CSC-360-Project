@@ -20,11 +20,12 @@ public class Opa extends User{
         Order transfer;
         if(approved){
             this.updateTxtOrderStatus(userid, orderid, Statuses.APPROVED);
+            String temp = removeOrder(orderid);
+            transfer = new Order(temp);
+            appendTxtOrder(transfer, "chef");
         }else{
             this.updateTxtOrderStatus(userid, orderid, Statuses.REJECTED);
+            removeOrder(orderid);
         }
-        String temp = removeOrder(orderid);
-        transfer = new Order(temp);
-        appendTxtOrder(transfer, "chef");
     }
 }
