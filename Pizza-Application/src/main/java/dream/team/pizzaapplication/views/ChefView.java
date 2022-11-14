@@ -34,12 +34,14 @@ public class ChefView {
         Label pizzaStatusString = new Label();
         Label pizzaOrderStatus = new Label();
         Button cookButton = new Button("Cook Pizza");
+        Button finishButton = new Button("Finish Order");
         cookButton.setVisible(false);
+        finishButton.setVisible(false);
         HBox stage = new HBox();
         VBox orderDetails = new VBox();
         orderDetails.getChildren().addAll(studentIdString, studentIdNumber, pizzaType, pizzaOrderType,
                 pizzaToppings, pizzaOrderToppings, pizzaOrderTimeString, pizzaOrderDateTime, pizzaStatusString,
-                pizzaOrderStatus, cookButton);
+                pizzaOrderStatus, cookButton, finishButton);
 
         orderDetails.setSpacing(DimensionPresets.Spacing.Surrounding.m);
         ListView pizzaListView = new ListView();
@@ -62,6 +64,7 @@ public class ChefView {
                 pizzaOrderStatus.setText(observableValue.getValue().getStatus().toString());
                 pizzaOrderDateTime.setText(observableValue.getValue().getDateTime());
                 selectedOrder = observableValue.getValue();
+                System.out.println(selectedOrder);
             }
         });
         cookButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -69,17 +72,30 @@ public class ChefView {
             public void handle(ActionEvent actionEvent) {
                 try {
                     chef.cookOrder(selectedOrder.getUid(), selectedOrder.getOid());
-                    pizzaListView.getItems().clear();
-                    pizzaListView.refresh();
-                    orderList.remove(selectedOrder);
-                    pizzaListView.getItems().addAll(orderList);
-                    pizzaListView.refresh();
+                    finishButton.setVisible(true);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 System.out.print("Cooking Pizza");
+            }
+        });
+
+        finishButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    chef.finishOrder(selectedOrder.getUid(), selectedOrder.getOid());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                pizzaListView.getItems().clear();
+                pizzaListView.refresh();
+                orderList.remove(selectedOrder);
+                pizzaListView.getItems().addAll(orderList);
+                pizzaListView.refresh();
+                finishButton.setVisible(false);
             }
         });
         return stage;
