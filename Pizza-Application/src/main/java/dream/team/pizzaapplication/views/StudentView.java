@@ -94,13 +94,13 @@ public class StudentView {
                     }
                 } else if (pepperoniPizza){
                     try {
-                        student.submitOrder(Order.Types.CHEESE, xCheese, bacon, mushroom);
+                        student.submitOrder(Order.Types.PEP, xCheese, bacon, mushroom);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }else {
                     try {
-                        student.submitOrder(Order.Types.CHEESE, xCheese, bacon, mushroom);
+                        student.submitOrder(Order.Types.VEGGI, xCheese, bacon, mushroom);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -135,7 +135,7 @@ public class StudentView {
                 xCheese = true;
             } else {
                 toppingPrice -= 1.5;
-                xCheese = true;
+                xCheese = false;
                 totalLabel.setText("Total: $" + totalPizzaPrice());
             }
         });

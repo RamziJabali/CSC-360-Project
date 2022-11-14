@@ -2,6 +2,7 @@ package dream.team.pizzaapplication.views;
 
 import dream.team.pizzaapplication.classdir.Chef;
 import dream.team.pizzaapplication.classdir.Order;
+import dream.team.pizzaapplication.classdir.Order.Statuses;
 import dream.team.pizzaapplication.values.DimensionPresets;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -79,6 +80,15 @@ public class ChefView {
                     throw new RuntimeException(e);
                 }
                 System.out.print("Cooking Pizza");
+                // here
+                pizzaListView.getItems().clear();
+                pizzaListView.refresh();
+                int index = orderList.indexOf(selectedOrder);
+                orderList.get(index).setStatus(Statuses.COOKING);
+                //orderList = chef.getOrders();
+                pizzaListView.getItems().addAll(orderList);
+                pizzaListView.refresh();
+                //finishButton.setVisible(false);
             }
         });
 

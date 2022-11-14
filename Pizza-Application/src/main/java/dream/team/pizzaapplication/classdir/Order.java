@@ -141,9 +141,12 @@ public class Order {
         this.type = Types.valueOf(data[4]);
 
         // parsing the set of toppings
-        data[5] = data[5].replace("[", "").replace("]", "");
-        for (String newtop : data[5].split(",", 0)) {
-            this.addTopping(Toppings.valueOf(newtop.trim()));
+        //System.out.println(data[5]);
+        if(!(data[5].trim().equals("[]"))){
+            data[5] = data[5].replace("[", "").replace("]", "");
+            for (String newtop : data[5].split(",", 0)) {
+                this.addTopping(Toppings.valueOf(newtop.trim()));
+            }
         }
         updateCost();
     }
@@ -172,7 +175,12 @@ public class Order {
         ordid = String.format("%08d", this.oid); // String representation of order's unique ID (8 digit width).
         ordstat = this.status.name();
         ordtype = this.type.name();
-        ordtops = this.toppings.toString();
+        if(this.toppings.isEmpty()){
+            //System.out.println("yep");
+            ordtops = "[]";
+        }else{
+            ordtops = this.toppings.toString();
+        }
         result = ordid + "," + this.uid + "," + ordstat + "," + this.datetime + "," + ordtype + "," + ordtops + "\n";
         return result;
     }

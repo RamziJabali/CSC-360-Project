@@ -33,11 +33,13 @@ public class Student extends User{
      */
     public void submitOrder(Types newtype, boolean xcheese, boolean bacon, boolean mush) throws IOException{
         Order ord = new Order();
+        ord.toppings.clear();
 
         ord.setOid(getNextOid());
         ord.setUid(this.uid);
         ord.setStatus(Statuses.SUBMITTED);
         
+        ord.setType(newtype);
         if(xcheese) ord.addTopping(Toppings.XCHEESE);
         if(bacon) ord.addTopping(Toppings.BACON);
         if(mush) ord.addTopping(Toppings.MUSH);

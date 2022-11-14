@@ -1,5 +1,14 @@
 package dream.team.pizzaapplication;
-
+/* Phase 3 Project
+ * CSE 360 - Dr. Balasooriya
+ * 
+ * Team #19:
+ * Ujjwal Baranwal
+ * Ramzi Eljabali
+ * Keegan Collier
+ * Varun Ravi Kumar
+ * Alexander Ono
+ */
 import dream.team.pizzaapplication.values.DimensionPresets;
 import dream.team.pizzaapplication.views.ChefView;
 import dream.team.pizzaapplication.views.LoginView;
@@ -15,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +42,7 @@ public class MainActivity extends Application {
         loginVBox.setSpacing(DimensionPresets.Spacing.Surrounding.l);
         Label enterIdLabel = new Label("Enter ID");
         Label welcomeBackLabel = new Label("Welcome Back");
+        welcomeBackLabel.setFont(new Font(30));
 
         TextArea idTextArea = new TextArea();
         idTextArea.setPrefHeight(DimensionPresets.TextFieldSize.m);
@@ -62,7 +73,10 @@ public class MainActivity extends Application {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else {
+                } else if(idTextArea.getText().trim().equals("test")){
+                    //System.out.println("not a student");
+                    welcomeBackLabel.setText("Error: Invalid ID!");
+                } else{
                     try {
                         stage.setScene(new Scene(studentView.getStudentView(idTextArea.getText().trim()), 900, 600));
                     } catch (IOException e) {
