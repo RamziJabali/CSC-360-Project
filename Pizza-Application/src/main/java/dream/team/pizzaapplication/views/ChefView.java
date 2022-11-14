@@ -1,6 +1,6 @@
 package dream.team.pizzaapplication.views;
 
-import dream.team.pizzaapplication.values.Order;
+import dream.team.pizzaapplication.classdir.Order;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -48,10 +48,10 @@ public class ChefView {
                 pizzaType.setText("Pizza Type:");
                 pizzaToppings.setText("Pizza Toppings:");
                 pizzaStatusString.setText("Pizza Status");
-                studentIdNumber.setText(observableValue.getValue().id);
-                pizzaOrderType.setText(observableValue.getValue().pizzaType);
-                pizzaOrderToppings.setText(observableValue.getValue().pizzaToppings);
-                pizzaOrderStatus.setText(observableValue.getValue().status);
+//                studentIdNumber.setText(observableValue.getValue().getUid());
+//                pizzaOrderType.setText(observableValue.getValue().getType());
+//                pizzaOrderToppings.setText(observableValue.getValue().getToppings().toString());
+//                pizzaOrderStatus.setText(observableValue.getValue().get);
             }
         });
         cookButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -61,42 +61,5 @@ public class ChefView {
             }
         });
         return stage;
-    }
-
-    private void dataBaseToArrayList() throws Exception {
-        String FILE_PATH = "/Users/ramzijabali/Documents/Code/CSC-360-Project/Pizza-Application/test";
-        File dataBase = new File(FILE_PATH);
-        Scanner readDataBase;
-        try {
-            readDataBase = new Scanner(dataBase);
-        } catch (FileNotFoundException e) {
-            throw new Exception("File not found!");
-        }
-        String nextWord;
-        while (true) {
-            Order order = new Order();
-            for (int j = 1; j <= 4; j++) {
-                nextWord = readDataBase.next();
-                if (!nextWord.equals("EOF")) {
-                    switch (j) {
-                        case 1:
-                            order.id = nextWord;
-                            break;
-                        case 2:
-                            order.pizzaType = nextWord;
-                            break;
-                        case 3:
-                            order.pizzaToppings = nextWord;
-                            break;
-                        case 4:
-                            order.status = nextWord;
-                            orderList.add(order);
-                            break;
-                    }
-                } else {
-                    return;
-                }
-            }
-        }
     }
 }

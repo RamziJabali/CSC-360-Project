@@ -5,6 +5,9 @@ import dream.team.pizzaapplication.classdir.Opa;
 import dream.team.pizzaapplication.classdir.Order;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,10 +32,12 @@ public class OpaView extends AnchorPane {
     private static final double HBoxHeight = 500;
     String currentOrder;
     Order selectedOrder;
+    int index = 0;
+    ArrayList<Order> orders;
 
     public AnchorPane getOpaView() throws IOException {
         Opa opa = new Opa();
-        ArrayList<Order> orders = opa.getOrders();
+        orders = opa.getOrders();
         // Setting size of the Anchor Pane
         this.setPrefHeight(anchorHeight);
         this.setPrefWidth(anchorWidth);
@@ -56,7 +61,15 @@ public class OpaView extends AnchorPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    opa.decideOrder(selectedOrder.getUid(), selectedOrder.getOid(), true);
+                    if (selectedOrder != null) {
+                        lv.getItems().clear();
+                        lv.refresh();
+                        opa.decideOrder(selectedOrder.getUid(), selectedOrder.getOid(), true);
+                        orders.remove(selectedOrder);
+                        lv.getItems().addAll(orders);
+                        lv.refresh();
+                        selectedOrder = null;
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -71,7 +84,15 @@ public class OpaView extends AnchorPane {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    opa.decideOrder(selectedOrder.getUid(), selectedOrder.getOid(), false);
+                    if (selectedOrder != null) {
+                        lv.getItems().clear();
+                        lv.refresh();
+                        opa.decideOrder(selectedOrder.getUid(), selectedOrder.getOid(), false);
+                        orders.remove(selectedOrder);
+                        lv.getItems().addAll(orders);
+                        lv.refresh();
+                        selectedOrder = null;
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -103,4 +124,5 @@ public class OpaView extends AnchorPane {
         });
         return this;
     }
+
 }
