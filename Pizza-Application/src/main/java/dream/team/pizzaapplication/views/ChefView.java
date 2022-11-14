@@ -1,6 +1,8 @@
 package dream.team.pizzaapplication.views;
 
+import dream.team.pizzaapplication.classdir.Chef;
 import dream.team.pizzaapplication.classdir.Order;
+import dream.team.pizzaapplication.values.DimensionPresets;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,32 +13,37 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ChefView {
-    ArrayList<Order> orderList = new ArrayList<>();
+    ArrayList<Order> orderList;
+    Order selectedOrder = null;
 
     public HBox getChefView() throws Exception {
+        Chef chef = new Chef();
+        orderList = chef.getOrders();
         Label studentIdString = new Label();
         Label studentIdNumber = new Label();
         Label pizzaType = new Label();
         Label pizzaOrderType = new Label();
+        Label pizzaOrderTimeString = new Label();
+        Label pizzaOrderDateTime = new Label();
         Label pizzaToppings = new Label();
         Label pizzaOrderToppings = new Label();
         Label pizzaStatusString = new Label();
         Label pizzaOrderStatus = new Label();
-        Button cookButton =  new Button("Cook Pizza");
+        Button cookButton = new Button("Cook Pizza");
         cookButton.setVisible(false);
         HBox stage = new HBox();
         VBox orderDetails = new VBox();
         orderDetails.getChildren().addAll(studentIdString, studentIdNumber, pizzaType, pizzaOrderType,
-                pizzaToppings, pizzaOrderToppings, pizzaStatusString, pizzaOrderStatus, cookButton);
+                pizzaToppings, pizzaOrderToppings, pizzaOrderTimeString, pizzaOrderDateTime, pizzaStatusString,
+                pizzaOrderStatus, cookButton);
+
+        orderDetails.setSpacing(DimensionPresets.Spacing.Surrounding.m);
         ListView pizzaListView = new ListView();
-        pizzaListView.setMinWidth(450);
-//        dataBaseToArrayList();
+        pizzaListView.setMinWidth(600);
         pizzaListView.getItems().addAll(orderList);
         stage.getChildren().add(pizzaListView);
         stage.getChildren().add(orderDetails);
@@ -44,20 +51,35 @@ public class ChefView {
             @Override
             public void changed(ObservableValue<? extends Order> observableValue, Order order, Order t1) {
                 cookButton.setVisible(true);
-                studentIdString.setText("Student Id");
+                studentIdString.setText("Student Id:");
                 pizzaType.setText("Pizza Type:");
                 pizzaToppings.setText("Pizza Toppings:");
-                pizzaStatusString.setText("Pizza Status");
-//                studentIdNumber.setText(observableValue.getValue().getUid());
-//                pizzaOrderType.setText(observableValue.getValue().getType());
-//                pizzaOrderToppings.setText(observableValue.getValue().getToppings().toString());
-//                pizzaOrderStatus.setText(observableValue.getValue().get);
+                pizzaStatusString.setText("Pizza Status:");
+                pizzaOrderTimeString.setText("Pizza Order Time:");
+                studentIdNumber.setText(observableValue.getValue().getUid());
+                pizzaOrderType.setText(observableValue.getValue().getType().toString());
+                pizzaOrderToppings.setText(observableValue.getValue().getToppings().toString());
+                pizzaOrderStatus.setText(observableValue.getValue().getStatus().toString());
+                pizzaOrderDateTime.setText(observableValue.getValue().getDateTime());
+                selectedOrder = observableValue.getValue();
             }
         });
         cookButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-            System.out.print("Cook pizza");
+                try {
+                    chef.cookOrder(selectedOrder.getUid(), selectedOrder.getOid());
+                    pizzaListView.getItems().clear();
+                    pizzaListView.refresh();
+                    orderList.remove(selectedOrder);
+                    pizzaListView.getItems().addAll(orderList);
+                    pizzaListView.refresh();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.print("Cooking Pizza");
             }
         });
         return stage;
