@@ -1,379 +1,194 @@
-//package dream.team.pizzaapplication.views;
-package application;
-	
-import java.io.IOException;
+package dream.team.pizzaapplication.views;
 
-import application.Order.Types;
-import application.Student;
-import application.User;
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import dream.team.pizzaapplication.classdir.Order;
+import dream.team.pizzaapplication.classdir.Student;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.geometry.Pos;
 import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class StudentView {
 
 
+    double toppingPrice = 0;
+    double pizzaPrice = 0;
 
-public class StudentView extends Application{
-	//Variables and Elements
-	boolean cheese = false, pepperoni = false, veggie = false;
-	boolean XCheese = false, Bacon = false, Mush = false;
-	Stage primaryStage = new Stage();
-	String PTyp, PTop;
-	int width = 900, height = 600;
-	String idNumber;
-	double pizzaPrice = 0, toppingPrice = 0;
-	TextField ASUID = new TextField();
-	RadioButton[] RBtn = new RadioButton[3];
-	CheckBox[] CBox = new CheckBox[3];
-	Insets INSETS = new Insets(10, 10, 10, 10);
-	Insets CINSETS = new Insets(10, 25, 25, 25);
-	BorderPane root = new BorderPane();
-	Label top = createLabel("Create Your Pizza");
-	VBox left = createNavigate();
-	HBox center = createMenu();	
-	AnchorPane right = createPriceDisplayArea();
-		Label outputPrice = new Label("$");
-	HBox bottom = createIDChecker();
-	
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			
-			right.getChildren().add(outputPrice);
-			//Filling BorderPane's Sections
-			root.setTop(top);
-			root.setCenter(center);
-			root.setRight(right);
-			root.setLeft(left);
-			root.setBottom(bottom);
-			
-			Scene pizzaMenu = new Scene(root,width,height);
-			primaryStage.setTitle("Student's Page: Menu");
-			primaryStage.setScene(pizzaMenu);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	//Creates a Button
-	private Button createButton(String text) {
-		Button button = new Button(text);
-		
-		//button.setMaxWidth(Double.MAX_VALUE);
-		button.setMaxHeight(Double.MAX_VALUE);
-		
-		button.setMinWidth(150);
-		BorderPane.setMargin(button, INSETS);
-		BorderPane.setAlignment(button, Pos.CENTER);
-		
-		return button;
-	}
-	
-	//Creates a Label
-	private Label createLabel(String text) {
-		Label label = new Label(text);
-		
-		label.setMaxWidth(Double.MAX_VALUE);
-		label.setMaxHeight(Double.MAX_VALUE);
-		label.setMinWidth(150);
-		label.setAlignment(Pos.CENTER);
-		BorderPane.setMargin(label, INSETS);
-		BorderPane.setAlignment(label, Pos.CENTER);
-		
-		return label;
-	}
-	
-	//Creates the Price Display Area
-	private AnchorPane createPriceDisplayArea() {
-		AnchorPane AP = new AnchorPane();
-		AP.setStyle("-fx-background-color: #FFFFFF;");
-		AP.setMaxWidth(Double.MAX_VALUE);
-		AP.setMaxHeight(Double.MAX_VALUE);
-		AP.setMinWidth(150);
-		BorderPane.setMargin(AP, INSETS);
-		BorderPane.setAlignment(AP, Pos.CENTER);
-		return AP;
-	}
-	
-	//Creates the Section for View Order History and View Current Order's Status
-	private VBox createNavigate() {
-		VBox Options = new VBox();
-		
-		Options.setAlignment(Pos.CENTER);
-		Options.setSpacing(20);
-		Options.setPadding(CINSETS);
-		
-		Button viewStatus = createButton("View Current Order Status");
-		viewStatus.setOnAction(event -> {viewStatusButton();});
-		
-		viewStatus.setMaxWidth(Double.MAX_VALUE);
-		viewStatus.setMaxHeight(20);
-		viewStatus.setStyle("-fx-border-color: #000000;");
-		viewStatus.setPadding(CINSETS);
-		
-		Button viewHistory = createButton("View Previous Order(s)");
-		viewHistory.setOnAction(event -> {viewHistoryButton();});
-		viewHistory.setMaxWidth(Double.MAX_VALUE);
-		viewHistory.setMaxHeight(20);
-		viewHistory.setStyle("-fx-border-color: #000000;");
-		viewHistory.setPadding(CINSETS);
-		
-		Options.getChildren().addAll(viewStatus, viewHistory);
-		
-		return Options;
-	}
-	
-	//Creates the Main Pizza Menu
-	private HBox createMenu() {
-		final ToggleGroup groupPizzaType = new ToggleGroup();
-		HBox Menu = new HBox();
-		Menu.setAlignment(Pos.CENTER);
-		Menu.setSpacing(50);
-		
-		VBox pizzaType = new VBox();
-		pizzaType.setSpacing(30);
-		
-		pizzaType.setMaxWidth(Double.MAX_VALUE);
-		pizzaType.setMaxHeight(20);
-		pizzaType.setStyle("-fx-border-color: #000000;");
-		pizzaType.setPadding(CINSETS);
-		
-		VBox pizzaToppings = new VBox();
-		pizzaToppings.setSpacing(30);
-		
-		pizzaToppings.setMaxWidth(Double.MAX_VALUE);
-		pizzaToppings.setMaxHeight(20);
-		pizzaToppings.setStyle("-fx-border-color: #000000;");
-		pizzaToppings.setPadding(CINSETS);
-		
-		Menu.getChildren().addAll(pizzaType, pizzaToppings);
-		
-		Label label_type = new Label("Pizza Type");
-		label_type.setStyle("-fx-translate-y: -20;" + "-fx-background-color: #f4f4f4;");
-        String stypes[] = {"Cheese", "Pepperoni", "Veggie"};
-        pizzaType.getChildren().add(label_type);
-        for( int i = 0; i < stypes.length; i++) {
-            RBtn[i] = new RadioButton(stypes[i]);
-            RBtn[i].setToggleGroup(groupPizzaType);
-            pizzaType.getChildren().add(RBtn[i]);
-        }
-        VBox.setMargin(RBtn[0], new Insets(-27,0,0,0));
-        Label label_topping = new Label("Toppings");
-        label_topping.setStyle("-fx-translate-y: -20;" + "-fx-background-color: #f4f4f4;");
-        String stops[] = { "ExtraCheese", "Bacon", "Mushroom" };
-        pizzaToppings.getChildren().add(label_topping);
-        for (int i = 0; i < stops.length; i++) {
-			CBox[i] = new CheckBox(stops[i]);
-			pizzaToppings.getChildren().add(CBox[i]);
-        }
-        VBox.setMargin(CBox[0], new Insets(-27,0,0,0));
-        RBtn[0].setOnAction(e->{
-        	pizzaPrice = 10.00;
-            outputPriceText();
-            pepperoni = false;
-            veggie = false;
-            cheese = true;
-        	});
-        RBtn[1].setOnAction(e->{
-        	pizzaPrice = 12.00;
-            outputPriceText();
-            pepperoni = true;
-            veggie = false;
-            cheese = false;
-        	});
-        RBtn[2].setOnAction(e->{
-        	pizzaPrice = 15.00;
-            outputPriceText();
-            pepperoni = false;
-            veggie = true;
-            cheese = false;
-        	});
+    ArrayList<Order> orders = new ArrayList<>();
+    VBox listViewVBox = new VBox();
+    ListView viewAllOrdersLv = new ListView();
+    CheckBox extraCheeseCheckBox = new CheckBox("Extra Cheese");
+    CheckBox baconCheckBox = new CheckBox("Bacon");
+    CheckBox mushroomCheckBox = new CheckBox("Mushroom");
+    ToggleGroup pizzaButtonToggleGroup = new ToggleGroup();
+    RadioButton cheeseRadioButton = new RadioButton("Cheese");
+    RadioButton pepperoniRadioButton = new RadioButton("Pepperoni");
+    RadioButton veggieRadioButton = new RadioButton("Veggi");
+    Label totalLabel = new Label("Total:");
+    Button submitOrderButton = new Button("Submit Order");
+
+
+    boolean cheesePizza, veggiePizza, pepperoniPizza, xCheese, mushroom, bacon;
+
+    public BorderPane getStudentView(String studentId) throws IOException {
+        Student student = new Student(studentId);
+        orders = student.getOrders();
+        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        Border borderStyle = new Border(borderStroke);
+        Color backgroundColor = Color.valueOf("#f4f4f4");
+        VBox vBoxPizzaType = new VBox(10);
+//        vBoxPizzaType.setPadding(new Insets(0, 100,0,0));
+        vBoxPizzaType.setMinWidth(120);
+        vBoxPizzaType.setMaxHeight(100);
+        vBoxPizzaType.setBorder(borderStyle);
+        vBoxPizzaType.setStyle("-fx-padding: -10 5 0 5;");
+
+        cheeseRadioButton.setPadding(new Insets(5));
+        pepperoniRadioButton.setPadding(new Insets(5));
+        veggieRadioButton.setPadding(new Insets(5));
+        cheeseRadioButton.setToggleGroup(pizzaButtonToggleGroup);
+        pepperoniRadioButton.setToggleGroup(pizzaButtonToggleGroup);
+        veggieRadioButton.setToggleGroup(pizzaButtonToggleGroup);
+        pizzaButtonToggleGroup.getSelectedToggle();
+
+        Label pizzaTypeLabel = new Label("Pizza Type");
+        pizzaTypeLabel.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+        vBoxPizzaType.getChildren().addAll(pizzaTypeLabel, cheeseRadioButton, pepperoniRadioButton, veggieRadioButton);
+
+        VBox vBoxToppings = new VBox(10);
+        vBoxToppings.setMaxWidth(250);
+        vBoxToppings.setMaxHeight(100);
+        vBoxToppings.setBorder(borderStyle);
+        vBoxToppings.setStyle("-fx-padding: -10 5 0 5;");
+
+        extraCheeseCheckBox.setPadding(new Insets(5));
+        baconCheckBox.setPadding(new Insets(5));
+        mushroomCheckBox.setPadding(new Insets(5));
+
+        Label pizzaToppingsLabel = new Label("Toppings");
+        pizzaToppingsLabel.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+        vBoxToppings.getChildren().addAll(pizzaToppingsLabel, extraCheeseCheckBox, baconCheckBox, mushroomCheckBox);
+        VBox totalVBox = new VBox(10);
+        totalVBox.setMinWidth(250);
+        totalVBox.setMaxHeight(100);
+        totalVBox.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+
+        totalVBox.getChildren().add(totalLabel);
+        HBox pizzaHBox = new HBox(vBoxPizzaType, vBoxToppings, totalVBox);
+        pizzaHBox.setSpacing(40);
+
+
+        submitOrderButton.setMaxWidth(600);
+        submitOrderButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(cheesePizza){
+                    try {
+                        student.submitOrder(Order.Types.CHEESE, xCheese, bacon, mushroom);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (pepperoniPizza){
+                    try {
+                        student.submitOrder(Order.Types.CHEESE, xCheese, bacon, mushroom);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else {
+                    try {
+                        student.submitOrder(Order.Types.CHEESE, xCheese, bacon, mushroom);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                viewAllOrdersLv.getItems().clear();
+                viewAllOrdersLv.refresh();
+                orders = student.getOrders();
+                viewAllOrdersLv.getItems().addAll(orders);
+                viewAllOrdersLv.refresh();
+            }
+        });
+        Label label = new Label("Dream Team Pizza");
+        label.setPadding(new Insets(0, 50, 0, 0));
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPadding(new Insets(10, 10, 0, 20));
+        borderPane.setLeft(label);
+        borderPane.setCenter(pizzaHBox);
+        borderPane.setBottom(listViewVBox); //TODO Add HBox with listViews
+        listViewVBox.getChildren().addAll(submitOrderButton,viewAllOrdersLv);
+        viewAllOrdersLv.getItems().addAll(orders);
+        radioButtonPizzaPrice();
         toppingCheckBox();
-		return Menu;
+        return borderPane;
+    }
 
-	}
-	
-	//Method to increment(or decrement) topping's price
-		private void toppingCheckBox() {
-			CBox[0].selectedProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-					// TODO Auto-generated method stub
-					if(arg2) {
-						toppingPrice += 1.5;
-						XCheese = true;
-						outputPriceText();
-					}
-					else{
-						toppingPrice -= 1.5;
-						XCheese = false;
-						outputPriceText();
-					}
-					
-					
-				}
-	        });
-			CBox[1].selectedProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-					// TODO Auto-generated method stub
-					if(arg2) {
-						toppingPrice += 1.5;
-						outputPriceText();
-						Bacon = true;
-					}
-					else{
-						toppingPrice -= 1.5;
-						outputPriceText();
-						Bacon = false;
-					}
-				}
-	        });
-			CBox[2].selectedProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-					// TODO Auto-generated method stub
-					if(arg2) {
-						toppingPrice += 1.5;
-						outputPriceText();
-						Mush = true;
-					}
-					else{
-						toppingPrice -= 1.5;
-						outputPriceText();
-						Mush = false;
-					}
-				}
-	        });
-		}
-	
-	private void exportPTyp(int a){
-		if(a==0) {PTyp = "Cheese";}
-		if(a==1) {PTyp = "Pepperoni";}
-		if(a==2) {PTyp = "Veggie";}
-	}
-	
-//	private void exportPTop(int a){
-//		if(a==0) {PTop = "ExtraCheese";}
-//		if(a==1) {PTop = "Bacon";}
-//		if(a==2) {PTop = "Mushroom";}
-//	}
-	
-	//Creates a section for inputting ASUID and Submitting the Order
-	private HBox createIDChecker(){
-		
-		HBox toCheck = new HBox();
-		toCheck.setAlignment(Pos.CENTER);
-		toCheck.setPadding(INSETS);
-		toCheck.setSpacing(20);
-		ASUID.setPromptText("Enter ASU ID");
-		//idNumber = ASUID.getText();
-		//System.out.println("ID Numbah : " + idNumber);
-		Button submit = createButton("Submit Order");
-		
-		submit.setOnAction(event -> {submitOrderButton();});
-		
-		toCheck.getChildren().addAll(ASUID, submit);
-		return toCheck;
-	}
-	
-	//Method for Submit Button. |NEEDS UPDATE|
-	private void submitOrderButton() {
-		
-		idNumber = ASUID.getText();
-		int ID = Integer.parseInt(idNumber);
-		System.out.println("Cheese Pizza: " + cheese);
-		System.out.println("Pepperoni Pizza: " + pepperoni);
-		System.out.println("Veggie Pizza: " + veggie);
-		System.out.println(XCheese);
-		System.out.println(Bacon);
-		System.out.println(Mush);
-		
-		System.out.println("ID: " + ID + " | PizzaType: " + PTyp + " | PizzaToppings: " + PTop );
-		Student student = null;
-		try {
-			student = new Student(idNumber);
-			System.out.println("Hello");
-		} catch (IOException e1) {
-			System.out.println("HOLO");
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		if(cheese == true){
-            try {
-				student.submitOrder(Types.CHEESE, XCheese, Bacon, Mush);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-		
-		if(pepperoni == true){
-            try {
-				student.submitOrder(Types.PEP, XCheese, Bacon, Mush);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-		
-		if(veggie == true){
-            try {
-				student.submitOrder(Types.VEGGI, XCheese, Bacon, Mush);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-	}
-	
-	//Method for View History Button. |NEEDS UPDATE|
-	private void viewHistoryButton() {
-		System.out.println("Order History");
-		BorderPane root = new BorderPane();
-		ListView list = new ListView();
-		
-		root.setLeft(list);
-		Scene scene = new Scene(root,400,400);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Student's Page: Order History");
-		primaryStage.show();
-		
-	}
-	
-	//Method for View Status Button. |NEEDS UPDATE|
-	private void viewStatusButton(/*String orderStatus*/) {
-		System.out.println("Order Status");
-		/**/String orderStatus = "ACCEPTED";
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Order Status");
-		alert.setContentText("Order Status: " + orderStatus);
-		alert.showAndWait();
-	}
-	
-	//Uses pizzaPrice and toppingPrice to display output
-	private void outputPriceText() {
-		outputPrice.setText("$" + Double.toString(pizzaPrice+toppingPrice));
-	}
-	
+    private void toppingCheckBox() {
+        extraCheeseCheckBox.selectedProperty().addListener((arg0, arg1, arg2) -> {
+            if (arg2) {
+                toppingPrice += 1.5;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+                xCheese = true;
+            } else {
+                toppingPrice -= 1.5;
+                xCheese = true;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+            }
+        });
+        baconCheckBox.selectedProperty().addListener((arg0, arg1, arg2) -> {
+            if (arg2) {
+                toppingPrice += 1.5;
+                bacon = true;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+            } else {
+                toppingPrice -= 1.5;
+                bacon = false;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+            }
+        });
+        mushroomCheckBox.selectedProperty().addListener((arg0, arg1, arg2) -> {
+            if (arg2) {
+                toppingPrice += 1.5;
+                mushroom = true;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+            } else {
+                toppingPrice -= 1.5;
+                mushroom = false;
+                totalLabel.setText("Total: $" + totalPizzaPrice());
+            }
+        });
+    }
+
+    private void radioButtonPizzaPrice() {
+        cheeseRadioButton.setOnAction(actionEvent -> {
+            pizzaPrice = 10;
+            cheesePizza = true;
+            pepperoniPizza = false;
+            veggiePizza = false;
+            totalLabel.setText("Total: $" + totalPizzaPrice());
+        });
+        pepperoniRadioButton.setOnAction(actionEvent -> {
+            pizzaPrice = 12;
+            cheesePizza = false;
+            pepperoniPizza = true;
+            veggiePizza = false;
+            totalLabel.setText("Total: $" + totalPizzaPrice());
+        });
+        veggieRadioButton.setOnAction(actionEvent -> {
+            pizzaPrice = 15;
+            cheesePizza = false;
+            pepperoniPizza = false;
+            veggiePizza = true;
+            totalLabel.setText("Total: $" + totalPizzaPrice());
+        });
+
+    }
+
+    private double totalPizzaPrice() {
+        return pizzaPrice + toppingPrice;
+    }
 }
-
-

@@ -4,6 +4,7 @@ import dream.team.pizzaapplication.values.DimensionPresets;
 import dream.team.pizzaapplication.views.ChefView;
 import dream.team.pizzaapplication.views.LoginView;
 import dream.team.pizzaapplication.views.OpaView;
+import dream.team.pizzaapplication.views.StudentView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +23,7 @@ public class MainActivity extends Application {
     private final LoginView loginView = new LoginView();
     private final ChefView chefView = new ChefView();
     private final OpaView opaView = new OpaView();
+    private final StudentView studentView = new StudentView();
     private static final int ID_LENGTH = 10;
 
     @Override
@@ -50,7 +52,7 @@ public class MainActivity extends Application {
             public void handle(ActionEvent actionEvent) {
                 if (idTextArea.getText().trim().equals("chef")) {
                     try {
-                        stage.setScene(new Scene( chefView.getChefView(),900, 600));
+                        stage.setScene(new Scene(chefView.getChefView(), 900, 600));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -61,7 +63,11 @@ public class MainActivity extends Application {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    //student view
+                    try {
+                        stage.setScene(new Scene(studentView.getStudentView(idTextArea.getText().trim()), 900, 600));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
