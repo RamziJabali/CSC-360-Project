@@ -49,7 +49,7 @@ public class Student extends User{
     
     // Checks the appropriate value for the next unique order ID (references counter.txt).
     private int getNextOid() throws IOException{
-        String counterpath = "txtdir/counter.txt";
+        String counterpath = "src/main/java/dream/team/pizzaapplication/txtdir/counter.txt";
         int counter = 0;
         try {
             File myObj = new File(counterpath);
