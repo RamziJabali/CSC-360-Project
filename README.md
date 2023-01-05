@@ -10,3 +10,5 @@ Created using the Agile framework.
 Video Demo:
 
 https://youtu.be/h1VEXjeLjgA
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/h1VEXjeLjgA/0.jpg)](https://youtu.be/h1VEXjeLjgA)
