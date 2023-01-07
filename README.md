@@ -6,6 +6,8 @@ As a college student, you'll be able to place orders with just a few clicks, cho
 
 Created using the Agile framework.
 
+[Video Demo](https://youtu.be/h1VEXjeLjgA)
+
 ### Application Layout:
 
 ![image](https://user-images.githubusercontent.com/84484634/210676957-17b79034-18e3-4416-a279-c6ac839a800d.png)
@@ -16,8 +18,3 @@ Created using the Agile framework.
 ![image](https://user-images.githubusercontent.com/84484634/211173029-8dd7044c-c1e3-478c-a215-936b5ad3f141.png)
 ![image](https://user-images.githubusercontent.com/84484634/211173034-1ac4e20b-90bc-45f6-9c25-76f9034cbca3.png)
 ![image](https://user-images.githubusercontent.com/84484634/211173041-bedddeb5-6aa0-4b76-9389-aec522e979ce.png)
-
-
-# Video Demo:
-
-https://youtu.be/h1VEXjeLjgA
